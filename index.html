@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PyMaster - Python Practice Questions</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button id="menuBtn" class="icon-btn" aria-label="Open categories">☰</button>
+    <div class="brand">🐍 <span>PyMaster</span></div>
+    <div class="overall" title="Overall progress">
+      <div class="bar"><i id="overallBar"></i></div>
+      <span id="overallText"></span>
+    </div>
+    <div class="tts-settings" id="ttsSettings">
+      <select id="voiceSelect" aria-label="Voice"></select>
+      <label class="speed">Speed
+        <input type="range" id="rate" min="0.6" max="1.6" step="0.1" value="1">
+      </label>
+    </div>
+    <button id="themeBtn" class="icon-btn" aria-label="Toggle theme">🌙</button>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar">
+      <nav id="catList"></nav>
+      <button id="resetBtn" class="ghost small">Reset all progress</button>
+    </aside>
+    <div id="backdrop"></div>
+    <main id="main"></main>
+  </div>
+
+  <div id="toast" role="status"></div>
+
+  <script src="questions.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>
