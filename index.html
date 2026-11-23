@@ -3,38 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PyMaster - Python Practice Questions</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Quartra - practice Python, C++, DSA and SQL</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="topbar">
-    <button id="menuBtn" class="icon-btn" aria-label="Open categories">☰</button>
-    <div class="brand">🐍 <span>PyMaster</span></div>
-    <div class="overall" title="Overall progress">
-      <div class="bar"><i id="overallBar"></i></div>
-      <span id="overallText"></span>
-    </div>
-    <div class="tts-settings" id="ttsSettings">
-      <select id="voiceSelect" aria-label="Voice"></select>
-      <label class="speed">Speed
-        <input type="range" id="rate" min="0.6" max="1.6" step="0.1" value="1">
-      </label>
-    </div>
-    <button id="themeBtn" class="icon-btn" aria-label="Toggle theme">🌙</button>
+    <div class="brand">◆ <span>Quartra</span></div>
+    <nav class="topnav" id="homeNav"></nav>
+    <button id="themeBtn" class="icon-btn" style="margin-left:auto" aria-label="Toggle theme">🌙</button>
   </header>
-
-  <div class="layout">
-    <aside id="sidebar">
-      <nav id="catList"></nav>
-      <button id="resetBtn" class="ghost small">Reset all progress</button>
-    </aside>
-    <div id="backdrop"></div>
-    <main id="main"></main>
+  <div class="home">
+    <section class="home-hero">
+      <h1><span>Quartra</span></h1>
+      <p>An offline practice lab for Python, C++, DSA and SQL. Questions, tests and answers on your own machine. Solve in your own editor.</p>
+    </section>
+    <section class="stats" id="stats"></section>
+    <section class="track-grid" id="tracks"></section>
+    <section class="how">
+      <div class="panel"><h2>1. Pick a track</h2><p>Each track has its own page, categories and Easy / Medium / Hard levels.</p></div>
+      <div class="panel"><h2>2. Solve in VS Code</h2><p>Read the question (or have it read aloud), write your solution in your editor.</p></div>
+      <div class="panel"><h2>3. Check and compare</h2><p>Download the test script, run it, then open the closed-by-default reference answer to compare.</p></div>
+    </section>
+    <div class="home-actions">
+      <button class="btn" id="exportBtn">⬇ Export progress</button>
+      <label class="btn" style="cursor:pointer">⬆ Import progress<input type="file" id="importFile" accept="application/json" hidden></label>
+      <button class="btn" id="resetAll">Reset everything</button>
+    </div>
+    <p class="foot">Progress is stored in this browser only. Works fully offline.</p>
   </div>
-
   <div id="toast" role="status"></div>
-
-  <script src="questions.js"></script>
-  <script src="ui.js"></script>
+  <script src="js/tracks.js"></script>
+  <script src="data/python.questions.js"></script>
+  <script src="data/cpp.questions.js"></script>
+  <script src="data/dsa.questions.js"></script>
+  <script src="data/sql.questions.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>
