@@ -1,6 +1,6 @@
-# Quartra
+# Quartra Code Lab
 
-Quartra is an offline practice lab for Python, C++, DSA and SQL. 232 questions across 35 categories, Easy to Hard, each with its own page. Solve in VS Code, check with downloadable test scripts, read questions aloud, track progress, and compare with a closed-by-default answer. Pure HTML, no server.
+Quartra Code Lab is an offline practice lab for Python, C++, DSA and SQL. 232 questions across 35 categories, Easy to Hard, each with its own page. Solve in VS Code, check with downloadable test scripts, read questions aloud, track progress, and compare with a closed-by-default answer. Pure HTML, no server.
 
 ## Quick start
 
