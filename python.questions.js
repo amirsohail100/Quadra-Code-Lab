@@ -1,18 +1,19 @@
 /* =====================================================================
-   questions.js  -  ALL categories and questions live in this one file.
+   data/python.questions.js  -  all Python categories and questions.
 
-   How to add a new question:
-     add(categoryId, level, title, functionName, starterCode, description,
-         tests, hints);
-   - level  : "easy" | "medium" | "hard"
-   - tests  : [ [pythonCode, expectedPythonLiteral], ... ]
-              * If pythonCode is a single expression, its value is compared.
-              * If it has several lines, it must set a variable called `result`.
-              * The first 2 tests are shown as "Samples", the rest as "Test cases".
-   - Inside test code you may use the helpers _write(path, text) and
-     _read(path). Every test runs inside a fresh temporary folder.
-   Add new categories to CATEGORIES (order here = order in the website).
+   Add a question:
+     add(categoryId, level, title, functionName, starterCode, description, tests, hints);
+   - level : "easy" | "medium" | "hard"
+   - tests : [ [pythonCode, expectedPythonLiteral], ... ]
+       * single expression  -> its value is compared
+       * several lines      -> the code must set a variable called `result`
+       * helpers _write(path, text) and _read(path) are available;
+         every test runs in a fresh temporary folder.
+   The first 2 tests are shown as "Samples", the rest as "More test cases".
+   The reference answer goes into data/python.solutions.js (same id).
    ===================================================================== */
+(function () {
+"use strict";
 
 const CATEGORIES = [
   { id: "basics",    name: "Python Basics",              icon: "🧱", desc: "Conditions, loops, numbers and logic - the foundation of everything." },
@@ -547,3 +548,6 @@ add("functions", "hard", "Lazy Chunks", "chunked", "def chunked(iterable, size):
   "Write a GENERATOR `chunked(iterable, size)` that lazily yields tuples of `size` items from any iterable (even another generator). The last tuple may be shorter.",
   [["list(chunked(range(5), 2))", "[(0, 1), (2, 3), (4,)]"], ["list(chunked('abcdef', 3))", "[('a', 'b', 'c'), ('d', 'e', 'f')]"], ["list(chunked([], 3))", "[]"], ["list(chunked((x for x in range(3)), 5))", "[(0, 1, 2)]"]],
   ["Use `itertools.islice(iterator, size)` inside a `while True` loop and stop when the chunk is empty."]);
+
+(window.QUARTRA_DATA = window.QUARTRA_DATA || {}).python = { categories: CATEGORIES, questions: QUESTIONS };
+})();
