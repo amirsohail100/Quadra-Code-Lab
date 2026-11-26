@@ -28,7 +28,7 @@ pre {
   position: sticky; top: 0; z-index: 30; height: 58px; display: flex; align-items: center; gap: 14px;
   padding: 0 18px; background: var(--panel); border-bottom: 1px solid var(--border);
 }
-.brand { font-weight: 800; font-size: 18px; letter-spacing: .3px; }
+.brand { white-space: nowrap; font-weight: 800; font-size: 18px; letter-spacing: .3px; }
 .brand span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .overall { display: flex; align-items: center; gap: 10px; margin-left: auto; font-size: 13px; color: var(--muted); }
 .bar { width: 150px; height: 8px; background: var(--panel2); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); }
@@ -136,7 +136,7 @@ details ul, details ol { margin: 8px 0 0; padding-left: 22px; }
   .hero { flex-wrap: wrap; } .hero-prog { margin-left: 0; text-align: left; }
 }
 
-/* ================= Quartra additions ================= */
+/* ================= Quadra Code Lab additions ================= */
 .topnav { display: flex; gap: 4px; margin-left: 6px; }
 .topnav a { color: var(--muted); text-decoration: none; padding: 6px 12px; border-radius: 99px; font-size: 14px; font-weight: 600; }
 .topnav a:hover { color: var(--text); background: var(--panel2); }
