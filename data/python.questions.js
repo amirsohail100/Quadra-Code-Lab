@@ -549,5 +549,147 @@ add("functions", "hard", "Lazy Chunks", "chunked", "def chunked(iterable, size):
   [["list(chunked(range(5), 2))", "[(0, 1), (2, 3), (4,)]"], ["list(chunked('abcdef', 3))", "[('a', 'b', 'c'), ('d', 'e', 'f')]"], ["list(chunked([], 3))", "[]"], ["list(chunked((x for x in range(3)), 5))", "[(0, 1, 2)]"]],
   ["Use `itertools.islice(iterator, size)` inside a `while True` loop and stop when the chunk is empty."]);
 
-(window.QUARTRA_DATA = window.QUARTRA_DATA || {}).python = { categories: CATEGORIES, questions: QUESTIONS };
+/* ======================= MORE QUESTIONS (added in Quadra Code Lab) ======================= */
+
+/* ---- basics ---- */
+add("basics", "easy", "Count Vowels", "count_vowels", "def count_vowels(s):",
+  "Return how many vowels (`a, e, i, o, u`, upper or lower case) the string `s` contains.",
+  [["count_vowels('Hello')", "2"], ["count_vowels('xyz')", "0"], ["count_vowels('AEIOU')", "5"], ["count_vowels('')", "0"]],
+  ["Lower-case the string first, then check `ch in 'aeiou'`."]);
+add("basics", "medium", "Perfect Number", "is_perfect", "def is_perfect(n):",
+  "A perfect number equals the sum of its proper divisors (all divisors except itself). Return `True` if `n` is perfect, otherwise `False`. `1` is not perfect.",
+  [["is_perfect(6)", "True"], ["is_perfect(28)", "True"], ["is_perfect(12)", "False"], ["is_perfect(1)", "False"], ["is_perfect(496)", "True"]],
+  ["Loop `i` from 1 to `n // 2` and add the numbers that divide `n`."]);
+add("basics", "hard", "Number to Any Base", "to_base", "def to_base(n, base):",
+  "Convert the non-negative integer `n` to a string in the given `base` (2 to 16). Use upper-case letters `A-F` for digits above 9. Do not use `bin`, `hex`, `oct` or `format`.",
+  [["to_base(10, 2)", "'1010'"], ["to_base(255, 16)", "'FF'"], ["to_base(0, 2)", "'0'"], ["to_base(100, 8)", "'144'"], ["to_base(31, 16)", "'1F'"]],
+  ["Repeatedly take `n % base` and divide `n //= base`; the digits come out in reverse order."]);
+
+/* ---- lists ---- */
+add("lists", "easy", "Second Largest", "second_largest", "def second_largest(nums):",
+  "Return the second largest DISTINCT value of the list `nums`. Return `None` if there are fewer than 2 distinct values.",
+  [["second_largest([3, 1, 4, 1, 5])", "4"], ["second_largest([2, 2])", "None"], ["second_largest([7])", "None"], ["second_largest([-1, -5, -3])", "-3"]],
+  ["`set(nums)` removes duplicates; then sort it."]);
+add("lists", "medium", "Rotate Left", "rotate_left", "def rotate_left(nums, k):",
+  "Return a NEW list where `nums` is rotated to the left by `k` positions. `k` may be larger than the list length. An empty list stays empty.",
+  [["rotate_left([1, 2, 3, 4, 5], 2)", "[3, 4, 5, 1, 2]"], ["rotate_left([1, 2, 3], 3)", "[1, 2, 3]"], ["rotate_left([1, 2, 3], 4)", "[2, 3, 1]"], ["rotate_left([], 5)", "[]"]],
+  ["Use `k % len(nums)` and slicing. Guard the empty list first."]);
+add("lists", "hard", "Merge Intervals", "merge_intervals", "def merge_intervals(intervals):",
+  "`intervals` is a list of `[start, end]` pairs in any order. Merge every overlapping or touching interval and return the merged list sorted by start.",
+  [["merge_intervals([[1, 3], [2, 6], [8, 10], [15, 18]])", "[[1, 6], [8, 10], [15, 18]]"], ["merge_intervals([[1, 4], [4, 5]])", "[[1, 5]]"], ["merge_intervals([])", "[]"], ["merge_intervals([[5, 6], [1, 2]])", "[[1, 2], [5, 6]]"], ["merge_intervals([[1, 10], [2, 3], [4, 5]])", "[[1, 10]]"]],
+  ["Sort by start. Keep a result list and compare the next start with the last merged end."]);
+
+/* ---- dicts ---- */
+add("dicts", "easy", "Invert Dictionary", "invert_dict", "def invert_dict(d):",
+  "Return a new dictionary where keys and values of `d` are swapped. All values of `d` are unique.",
+  [["invert_dict({'a': 1, 'b': 2})", "{1: 'a', 2: 'b'}"], ["invert_dict({})", "{}"], ["invert_dict({'x': 'y'})", "{'y': 'x'}"]],
+  ["A dict comprehension: `{v: k for k, v in d.items()}`."]);
+add("dicts", "medium", "Group Words by Length", "group_by_length", "def group_by_length(words):",
+  "Return a dictionary that maps each word length to the list of words of that length, keeping the original order of the words.",
+  [["group_by_length(['a', 'bb', 'c', 'dd', 'eee'])", "{1: ['a', 'c'], 2: ['bb', 'dd'], 3: ['eee']}"], ["group_by_length([])", "{}"], ["group_by_length(['hi', 'yo', 'hey'])", "{2: ['hi', 'yo'], 3: ['hey']}"]],
+  ["`result.setdefault(len(w), []).append(w)`."]);
+add("dicts", "hard", "Flatten Nested Dictionary", "flatten_dict", "def flatten_dict(d):",
+  "Flatten a nested dictionary. Nested keys are joined with a dot. Example: `{'a': {'b': 1}}` becomes `{'a.b': 1}`. Values that are not dictionaries are kept as they are.",
+  [["flatten_dict({'a': {'b': 1, 'c': {'d': 2}}, 'e': 3})", "{'a.b': 1, 'a.c.d': 2, 'e': 3}"], ["flatten_dict({})", "{}"], ["flatten_dict({'x': {'y': {'z': 0}}})", "{'x.y.z': 0}"], ["flatten_dict({'k': [1, 2]})", "{'k': [1, 2]}"]],
+  ["Write a recursive helper that carries a `prefix` string."]);
+
+/* ---- json ---- */
+add("json", "easy", "Read a Key from JSON", "get_name", "import json\n\ndef get_name(text):\n    pass",
+  "`text` is a JSON string of an object. Return the value stored under the key `\"name\"`.",
+  [["get_name('{\"name\": \"Ravi\", \"age\": 3}')", "'Ravi'"], ["get_name('{\"name\": \"\"}')", "''"], ["get_name('{\"id\": 1, \"name\": \"Asha\"}')", "'Asha'"]],
+  ["`json.loads(text)` gives a normal dictionary."]);
+add("json", "medium", "Total Price from JSON", "total_price", "import json\n\ndef total_price(text):\n    pass",
+  "`text` is a JSON list of objects like `{\"price\": 2.5, \"qty\": 2}`. Return the sum of `price * qty` over all items. An empty list gives `0`.",
+  [["total_price('[{\"price\": 2.5, \"qty\": 2}, {\"price\": 10, \"qty\": 1}]')", "15.0"], ["total_price('[]')", "0"], ["total_price('[{\"price\": 3, \"qty\": 3}]')", "9"]],
+  ["Parse with `json.loads`, then `sum(item['price'] * item['qty'] for item in data)`."]);
+add("json", "hard", "Find All Values of a Key", "find_all_values", "import json\n\ndef find_all_values(text, key):\n    pass",
+  "`text` is a JSON string of any nesting (objects inside lists inside objects...). Return a list of EVERY value stored under `key`, at any depth, in document order.",
+  [["find_all_values('{\"id\": 1, \"child\": {\"id\": 2, \"items\": [{\"id\": 3}]}}', 'id')", "[1, 2, 3]"], ["find_all_values('{\"a\": 1}', 'id')", "[]"], ["find_all_values('[{\"id\": \"x\"}, {\"id\": \"y\"}]', 'id')", "['x', 'y']"], ["find_all_values('{\"a\": {\"a\": {\"a\": 1}}}', 'a')", "[{'a': {'a': 1}}, {'a': 1}, 1]"]],
+  ["Write a recursive function. For a dict: check each key, then recurse into each value. For a list: recurse into each item."]);
+
+/* ---- files ---- */
+add("files", "easy", "Count Lines in a File", "count_lines", "def count_lines(path):",
+  "Return the number of lines in the text file `path`. An empty file has 0 lines.",
+  [["_write('a.txt', 'a\\nb\\nc\\n')\nresult = count_lines('a.txt')", "3"], ["_write('a.txt', '')\nresult = count_lines('a.txt')", "0"], ["_write('a.txt', 'x')\nresult = count_lines('a.txt')", "1"]],
+  ["Loop over the file object, or use `len(f.readlines())`."]);
+add("files", "medium", "Word Count of a File", "word_count", "def word_count(path):",
+  "Return the total number of words (separated by any whitespace) in the text file `path`.",
+  [["_write('a.txt', 'hello world\\nfoo\\n')\nresult = word_count('a.txt')", "3"], ["_write('a.txt', '')\nresult = word_count('a.txt')", "0"], ["_write('a.txt', '  many   spaces\\n\\n\\nhere ')\nresult = word_count('a.txt')", "3"]],
+  ["`f.read().split()` splits on any whitespace and ignores extra spaces."]);
+add("files", "hard", "CSV Column Average", "csv_average", "def csv_average(path, column):",
+  "The file `path` is a simple CSV (comma separated, no quotes). The first line holds the column names. Return the average of the numeric column `column` as a float rounded to 2 decimals. Do not use the `csv` or `pandas` modules.",
+  [["_write('d.csv', 'name,score\\nA,10\\nB,20\\nC,25\\n')\nresult = csv_average('d.csv', 'score')", "18.33"], ["_write('d.csv', 'k,v\\nx,5\\n')\nresult = csv_average('d.csv', 'v')", "5.0"], ["_write('d.csv', 'a,b\\n1,2\\n3,4\\n')\nresult = csv_average('d.csv', 'a')", "2.0"]],
+  ["Split the header, find the index of `column`, then average `float(line.split(',')[index])` for the other lines."]);
+
+/* ---- os ---- */
+add("os", "easy", "File Extension", "file_extension", "import os\n\ndef file_extension(path):\n    pass",
+  "Return the extension of `path` including the dot (for example `'.txt'`). If there is no extension return an empty string. For `archive.tar.gz` return only the last one: `'.gz'`.",
+  [["file_extension('a/b/report.txt')", "'.txt'"], ["file_extension('archive.tar.gz')", "'.gz'"], ["file_extension('README')", "''"]],
+  ["`os.path.splitext(path)[1]`."]);
+add("os", "medium", "List Files Sorted", "list_files", "import os\n\ndef list_files(folder):\n    pass",
+  "Return the names of the FILES (not sub-folders) directly inside `folder`, sorted alphabetically.",
+  [["os.makedirs('d/sub')\n_write('d/b.txt', '1')\n_write('d/a.txt', '2')\nresult = list_files('d')", "['a.txt', 'b.txt']"], ["os.makedirs('e')\nresult = list_files('e')", "[]"], ["_write('f/z.py', '')\n_write('f/m.py', '')\nresult = list_files('f')", "['m.py', 'z.py']"]],
+  ["`os.listdir(folder)` + `os.path.isfile(os.path.join(folder, name))`."]);
+add("os", "hard", "Total Size of a Folder", "folder_size", "import os\n\ndef folder_size(folder):\n    pass",
+  "Return the total size in bytes of all files inside `folder`, including every nested sub-folder. An empty folder is 0.",
+  [["_write('t/a.txt', '12345')\n_write('t/s/b.txt', '123')\nresult = folder_size('t')", "8"], ["os.makedirs('z')\nresult = folder_size('z')", "0"], ["_write('q/x/y/z.txt', 'hello')\nresult = folder_size('q')", "5"]],
+  ["`os.walk(folder)` gives `(root, dirs, files)` for each level; add `os.path.getsize(...)` of each file."]);
+
+/* ---- classes ---- */
+add("classes", "easy", "Bank Account", "BankAccount", "class BankAccount:\n    def __init__(self, balance=0):\n        pass\n\n    def deposit(self, amount):\n        pass\n\n    def withdraw(self, amount):\n        pass",
+  "Create a `BankAccount` with a `balance` attribute (default 0). `deposit(amount)` adds money. `withdraw(amount)` subtracts money but raises `ValueError` when the balance is not enough.",
+  [["a = BankAccount(100)\na.deposit(50)\nresult = a.balance", "150"], ["a = BankAccount()\nresult = a.balance", "0"], ["a = BankAccount(10)\ntry:\n    a.withdraw(20)\nexcept ValueError:\n    result = 'no money'", "'no money'"], ["a = BankAccount(30)\na.withdraw(10)\nresult = a.balance", "20"]],
+  ["Check `amount > self.balance` before subtracting."]);
+add("classes", "medium", "Vector2D with Dunder Methods", "Vector2D", "class Vector2D:\n    def __init__(self, x, y):\n        pass",
+  "Create `Vector2D(x, y)` that supports `+` (add two vectors), `*` with a number (scale), `==` (equal coordinates) and `repr()` that returns text like `Vector2D(1, 2)`.",
+  [["Vector2D(1, 2) + Vector2D(3, 4) == Vector2D(4, 6)", "True"], ["repr(Vector2D(1, 2))", "'Vector2D(1, 2)'"], ["(Vector2D(1, 2) * 3) == Vector2D(3, 6)", "True"], ["Vector2D(1, 2) == Vector2D(2, 1)", "False"]],
+  ["Implement `__add__`, `__mul__`, `__eq__` and `__repr__`."]);
+add("classes", "hard", "Temperature with Properties", "Temperature", "class Temperature:\n    def __init__(self, celsius):\n        pass",
+  "Create `Temperature(celsius)`. It has a `celsius` property and a `fahrenheit` property that can be READ and SET (setting one changes the other). A value below `-273.15` Celsius raises `ValueError` (also inside `__init__`).",
+  [["t = Temperature(100)\nresult = t.fahrenheit", "212.0"], ["t = Temperature(0)\nt.fahrenheit = 212\nresult = t.celsius", "100.0"], ["try:\n    Temperature(-300)\nexcept ValueError:\n    result = 'bad'", "'bad'"], ["t = Temperature(10)\ntry:\n    t.celsius = -500\nexcept ValueError:\n    result = t.celsius", "10"]],
+  ["Use `@property` and `@celsius.setter`. Store one private value and compute the other."]);
+
+/* ---- async ---- */
+add("async", "easy", "Async Double", "double", "import asyncio\n\nasync def double(x):\n    pass",
+  "Write `async def double(x)` that waits 0.01 seconds with `asyncio.sleep` and then returns `x * 2`.",
+  [["asyncio.run(double(4))", "8"], ["asyncio.run(double(0))", "0"], ["asyncio.run(double(-3))", "-6"]],
+  ["`await asyncio.sleep(0.01)` then `return x * 2`."]);
+add("async", "medium", "Gather Squares", "square_all", "import asyncio\n\nasync def square_all(nums):\n    pass",
+  "Write `async def square_all(nums)` that squares every number CONCURRENTLY. Each square must wait 0.2 seconds (`asyncio.sleep`) before it is computed. Return the squares in the same order as `nums`. Ten numbers must finish in well under one second.",
+  [["asyncio.run(square_all([1, 2, 3]))", "[1, 4, 9]"], ["asyncio.run(square_all([]))", "[]"], ["start = time.time()\nasyncio.run(square_all(list(range(10))))\nresult = (time.time() - start) < 0.9", "True"]],
+  ["Define a small inner `async def` and run all of them with `await asyncio.gather(*...)`. `gather` keeps the order."]);
+add("async", "hard", "Fetch with Timeout", "fetch_or_default", "import asyncio\n\nasync def fetch_or_default(coro_func, timeout, default):\n    pass",
+  "`coro_func` is a function that returns a coroutine when called with no arguments. Await it, but wait at most `timeout` seconds. Return its result, or `default` if it takes longer.",
+  [["async def slow():\n    await asyncio.sleep(1)\n    return 'done'\nresult = asyncio.run(fetch_or_default(slow, 0.1, 'late'))", "'late'"], ["async def fast():\n    return 'ok'\nresult = asyncio.run(fetch_or_default(fast, 1, 'late'))", "'ok'"], ["async def fast2():\n    await asyncio.sleep(0.05)\n    return 7\nresult = asyncio.run(fetch_or_default(fast2, 1, 0))", "7"]],
+  ["`await asyncio.wait_for(coro_func(), timeout)` raises `asyncio.TimeoutError` when it is too slow."]);
+
+/* ---- strings ---- */
+add("strings", "easy", "Reverse Words", "reverse_words", "def reverse_words(s):",
+  "Reverse the ORDER of the words in `s`. The result has exactly one space between words and no leading or trailing spaces.",
+  [["reverse_words('hello world')", "'world hello'"], ["reverse_words('  a  b ')", "'b a'"], ["reverse_words('')", "''"], ["reverse_words('one')", "'one'"]],
+  ["`s.split()` ignores extra spaces. Then reverse and `' '.join`."]);
+add("strings", "medium", "Caesar Cipher", "caesar", "def caesar(text, shift):",
+  "Shift every letter of `text` by `shift` positions in the alphabet (wrapping around). Keep upper/lower case. Other characters stay unchanged. `shift` can be negative.",
+  [["caesar('abc', 1)", "'bcd'"], ["caesar('xyz', 3)", "'abc'"], ["caesar('Hello, World!', 5)", "'Mjqqt, Btwqi!'"], ["caesar('bcd', -1)", "'abc'"]],
+  ["For a letter: `chr((ord(ch) - base + shift) % 26 + base)` where `base` is `ord('a')` or `ord('A')`."]);
+add("strings", "hard", "Longest Palindromic Substring", "longest_palindrome", "def longest_palindrome(s):",
+  "Return the longest substring of `s` that reads the same forwards and backwards. If several have the same length, return the one that starts first. An empty string returns an empty string.",
+  [["longest_palindrome('babad')", "'bab'"], ["longest_palindrome('cbbd')", "'bb'"], ["longest_palindrome('a')", "'a'"], ["longest_palindrome('forgeeksskeegfor')", "'geeksskeeg'"], ["longest_palindrome('')", "''"]],
+  ["Expand around every centre (one for odd length, one for even length) and keep the best."]);
+
+/* ---- functions ---- */
+add("functions", "easy", "Make Multiplier", "make_multiplier", "def make_multiplier(n):",
+  "Return a NEW function that multiplies its argument by `n` (a closure). Example: `make_multiplier(3)(4)` is `12`.",
+  [["make_multiplier(3)(4)", "12"], ["make_multiplier(0)(9)", "0"], ["make_multiplier(-2)(5)", "-10"]],
+  ["Define an inner function that uses `n` and return it (without calling it)."]);
+add("functions", "medium", "Fibonacci Generator", "fib_upto", "def fib_upto(limit):",
+  "Write a GENERATOR that yields the Fibonacci numbers `0, 1, 1, 2, 3, 5, ...` while they are less than or equal to `limit`.",
+  [["list(fib_upto(20))", "[0, 1, 1, 2, 3, 5, 8, 13]"], ["list(fib_upto(0))", "[0]"], ["list(fib_upto(1))", "[0, 1, 1]"], ["list(fib_upto(-1))", "[]"]],
+  ["Keep two variables `a, b = 0, 1`; `yield a` while `a <= limit`, then `a, b = b, a + b`."]);
+add("functions", "hard", "Memoize Decorator", "memoize", "def memoize(func):",
+  "Write a decorator `memoize` that caches results by the positional arguments, so the wrapped function runs only once for the same arguments. A memoized recursive Fibonacci of 80 must return instantly.",
+  [["calls = []\n@memoize\ndef sq(x):\n    calls.append(x)\n    return x * x\nsq(3); sq(3); sq(4)\nresult = (sq(3), calls)", "(9, [3, 4])"], ["@memoize\ndef fib(n):\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\nresult = fib(80)", "23416728348467685"], ["@memoize\ndef add(a, b):\n    return a + b\nresult = (add(1, 2), add(2, 1))", "(3, 3)"]],
+  ["Keep a dictionary in the decorator; the key is the `args` tuple. Return the stored value if the key exists."]);
+
+(window.QUADRA_DATA = window.QUADRA_DATA || {}).python = { categories: CATEGORIES, questions: QUESTIONS };
 })();
