@@ -4,7 +4,7 @@
      cppTest(q)     -> test_<id>.cpp  (includes solution.cpp)
      sqlSetup(q)    -> setup_<id>.sql (CREATE TABLE + INSERT, SQLite dialect)
      sqlCheck(q)    -> check_<id>.py  (runs solution.sql on in-memory SQLite and compares)
-   Works in the browser (window.QuartraHarness) and in Node (module.exports).
+   Works in the browser (window.QuadraHarness) and in Node (module.exports).
    ===================================================================== */
 (function (root) {
   "use strict";
@@ -203,7 +203,7 @@ template <class T> std::enable_if_t<!streamable<T>::value, std::string> show(con
 
   function sqlSetup(q) {
     const out = [
-      "-- Quartra SQL setup for: " + q.title + "   (SQLite dialect)",
+      "-- Quadra Code Lab SQL setup for: " + q.title + "   (SQLite dialect)",
       "-- Run this once in your SQL tool (DB Browser for SQLite, VS Code SQLite extension, sqlite3 CLI ...),",
       "-- then write your query.",
       ""
@@ -315,5 +315,5 @@ sys.exit(1)
 
   const api = { pythonTest, cppTest, sqlSetup, sqlCheck, LEVEL_LABEL };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
-  else root.QuartraHarness = api;
+  else root.QuadraHarness = api;
 })(typeof window !== "undefined" ? window : this);
