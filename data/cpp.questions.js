@@ -1,5 +1,5 @@
-/* data/cpp.questions.js  –  Quartra C++ track
-   42 questions · 7 categories · 6 per category (2 easy / 2 medium / 2 hard)
+/* data/cpp.questions.js  –  Quadra Code Lab C++ track
+   63 questions · 7 categories · 9 per category
    Each test: [ "expr_or_body", "expected_literal" ]
    Body style (contains 'return'): wrapped in [&](){ ... }()
 */
@@ -582,8 +582,333 @@ return make_pair(A::count(), B::count());`,
     ["Store a static int in InstanceCounter<Derived>; increment in constructor, decrement in destructor."]
   );
 
+  /* ═══════════ MORE QUESTIONS (added in Quadra Code Lab) ═══════════ */
+
+  /* ───────── C++ Basics ───────── */
+  add("basics","easy","Factorial",
+    "long long factorial(int n)",
+    "Return `n!` (n factorial) for `0 <= n <= 20`. `0! = 1`.\n\nExample: `factorial(5)` → `120`",
+    [
+      ["factorial(0)","1"],
+      ["factorial(5)","120"],
+      ["factorial(10)","3628800"],
+      ["factorial(20)","2432902008176640000LL"],
+    ],
+    ["Use `long long`: 20! does not fit in `int`."]
+  );
+
+  add("basics","medium","Decimal to Binary String",
+    "string toBinary(int n)",
+    "Return the binary representation of the non-negative integer `n` as a string. `0` returns `\"0\"`. Do not use `bitset`.\n\nExample: `toBinary(10)` → `\"1010\"`",
+    [
+      ['toBinary(10)','"1010"'],
+      ['toBinary(0)','"0"'],
+      ['toBinary(255)','"11111111"'],
+      ['toBinary(1)','"1"'],
+    ],
+    ["Collect `n % 2` while dividing `n` by 2, then reverse the collected digits."]
+  );
+
+  add("basics","hard","Count Primes (Sieve)",
+    "int countPrimes(int n)",
+    "Return how many prime numbers are strictly less than `n` (`0 <= n <= 5,000,000`). It must be fast, so use the Sieve of Eratosthenes.\n\nExample: `countPrimes(10)` → `4` (2, 3, 5, 7)",
+    [
+      ["countPrimes(0)","0"],
+      ["countPrimes(2)","0"],
+      ["countPrimes(10)","4"],
+      ["countPrimes(100)","25"],
+      ["countPrimes(1000000)","78498"],
+    ],
+    ["Make a `vector<bool>` of size `n`, then cross out the multiples of every prime starting from `p*p`."]
+  );
+
+  /* ───────── Strings & Chars ───────── */
+  add("strings","easy","Palindrome Check",
+    "bool isPalindrome(const string& s)",
+    "Return `true` if `s` reads the same forwards and backwards (exact characters, case matters). An empty string is a palindrome.\n\nExample: `isPalindrome(\"racecar\")` → `true`",
+    [
+      ['isPalindrome("racecar")','true'],
+      ['isPalindrome("ab")','false'],
+      ['isPalindrome("")','true'],
+      ['isPalindrome("Aa")','false'],
+    ],
+    ["Compare `s[i]` with `s[n-1-i]` for the first half."]
+  );
+
+  add("strings","medium","Capitalize Words",
+    "string capitalizeWords(string s)",
+    "Make the first letter of every word upper case and the rest lower case. Words are separated by single spaces, keep the spaces as they are.\n\nExample: `capitalizeWords(\"hELLO wORLD\")` → `\"Hello World\"`",
+    [
+      ['capitalizeWords("hello world")','"Hello World"'],
+      ['capitalizeWords("hELLO wORLD")','"Hello World"'],
+      ['capitalizeWords("")','""'],
+      ['capitalizeWords("a b c")','"A B C"'],
+    ],
+    ["Track whether the previous character was a space (or the start). Use `toupper` / `tolower`."]
+  );
+
+  add("strings","hard","Run-Length Encoding",
+    "string rle(const string& s)",
+    "Compress `s` by replacing each run of the same character with the character followed by the run length (always write the count, even for 1).\n\nExample: `rle(\"aaabcc\")` → `\"a3b1c2\"`",
+    [
+      ['rle("aaabcc")','"a3b1c2"'],
+      ['rle("")','""'],
+      ['rle("z")','"z1"'],
+      ['rle("aabbbbbbbbbbbb")','"a2b12"'],
+    ],
+    ["Walk with an index and count how far the same character continues. Use `to_string` for the count."]
+  );
+
+  /* ───────── Vectors & Arrays ───────── */
+  add("vectors","easy","Sum of Vector",
+    "long long sumVec(const vector<int>& v)",
+    "Return the sum of all elements. The sum can be larger than `int`, so return `long long`. An empty vector sums to 0.\n\nExample: `sumVec({1,2,3})` → `6`",
+    [
+      ["sumVec({1,2,3})","6"],
+      ["sumVec({})","0"],
+      ["sumVec({-1,1})","0"],
+      ["sumVec({1000000000,1000000000,1000000000})","3000000000LL"],
+    ],
+    ["Start with `long long total = 0;` so the addition does not overflow."]
+  );
+
+  add("vectors","medium","Move Zeroes",
+    "vector<int> moveZeroes(vector<int> v)",
+    "Move all `0` values to the end of the vector while keeping the order of the other elements. Return the result.\n\nExample: `moveZeroes({0,1,0,3,12})` → `{1,3,12,0,0}`",
+    [
+      ["moveZeroes({0,1,0,3,12})","vector<int>{1,3,12,0,0}"],
+      ["moveZeroes({0})","vector<int>{0}"],
+      ["moveZeroes({1,2})","vector<int>{1,2}"],
+      ["moveZeroes({})","vector<int>{}"],
+    ],
+    ["`std::stable_partition`, or keep a write index for the non-zero values and fill the rest with 0."]
+  );
+
+  add("vectors","hard","Product Except Self",
+    "vector<int> productExceptSelf(vector<int> v)",
+    "Return a vector `out` where `out[i]` is the product of all elements of `v` except `v[i]`. Do NOT use division. All products fit in `int`.\n\nExample: `productExceptSelf({1,2,3,4})` → `{24,12,8,6}`",
+    [
+      ["productExceptSelf({1,2,3,4})","vector<int>{24,12,8,6}"],
+      ["productExceptSelf({-1,1,0,-3,3})","vector<int>{0,0,9,0,0}"],
+      ["productExceptSelf({2,3})","vector<int>{3,2}"],
+      ["productExceptSelf({5})","vector<int>{1}"],
+    ],
+    ["Do two passes: first store the product of everything to the LEFT, then multiply by the product of everything to the RIGHT."]
+  );
+
+  /* ───────── Maps & Sets ───────── */
+  add("maps","easy","Count Characters",
+    "map<char,int> charCount(const string& s)",
+    "Return a `map<char,int>` that tells how many times each character occurs in `s`.\n\nExample: `charCount(\"aab\")` → `{'a':2, 'b':1}`",
+    [
+      [`charCount("aab")`,`map<char,int>{{'a',2},{'b',1}}`],
+      [`charCount("")`,`map<char,int>{}`],
+      [`charCount("zzz")`,`map<char,int>{{'z',3}}`],
+    ],
+    ["`++m[c]` creates the entry with 0 first, then adds one."]
+  );
+
+  add("maps","medium","First Unique Character",
+    "int firstUnique(const string& s)",
+    "Return the index of the first character that appears exactly once in `s`, or `-1` if there is none.\n\nExample: `firstUnique(\"loveleetcode\")` → `2`",
+    [
+      ['firstUnique("leetcode")','0'],
+      ['firstUnique("loveleetcode")','2'],
+      ['firstUnique("aabb")','-1'],
+      ['firstUnique("")','-1'],
+    ],
+    ["First count every character, then scan the string again and return the first index with count 1."]
+  );
+
+  add("maps","hard","Group Anagrams",
+    "vector<vector<string>> groupAnagrams(vector<string> words)",
+    "Group the words that are anagrams of each other. Inside a group keep the input order. Groups are ordered by the first appearance of their first word.\n\nExample: `{\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"}` → `{{\"eat\",\"tea\",\"ate\"},{\"tan\",\"nat\"},{\"bat\"}}`",
+    [
+      ['groupAnagrams({"eat","tea","tan","ate","nat","bat"})','vector<vector<string>>{{"eat","tea","ate"},{"tan","nat"},{"bat"}}'],
+      ['groupAnagrams({})','vector<vector<string>>{}'],
+      ['groupAnagrams({"a"})','vector<vector<string>>{{"a"}}'],
+      ['groupAnagrams({"ab","ba","ab"})','vector<vector<string>>{{"ab","ba","ab"}}'],
+    ],
+    ["The sorted letters of a word are the same for all anagrams: use them as a map key that points to a group index."]
+  );
+
+  /* ───────── OOP & Classes ───────── */
+  add("oop","easy","Person Class",
+    "class Person { ... }",
+    "Define a class `Person` with a constructor `Person(string name, int age)`, and the methods `getName()`, `getAge()` and `birthday()` (adds one year to the age).\n\nExample: age 20 then `birthday()` → `getAge()` is `21`",
+    [
+      [
+        `Person p("Ravi", 20);
+p.birthday();
+return p.getAge();`,
+        "21"
+      ],
+      [
+        `Person p("Asha", 5);
+return p.getName();`,
+        '"Asha"'
+      ],
+    ],
+    ["Keep `name` and `age` as private members and set them in the constructor."]
+  );
+
+  add("oop","medium","Animal Sounds (Polymorphism)",
+    "class Animal / Dog / Cat",
+    "Define a base class `Animal` with a `virtual string sound()`. Derive `Dog` (returns `\"Woof\"`) and `Cat` (returns `\"Meow\"`). Calling `sound()` through an `Animal*` must run the derived version.\n\nExample: a `Dog` and a `Cat` in an `Animal*` array → `\"Woof\"`, `\"Meow\"`",
+    [
+      [
+        `Dog d; Cat c;
+Animal* a[2] = {&d, &c};
+return a[0]->sound() + a[1]->sound();`,
+        '"WoofMeow"'
+      ],
+      [
+        `Dog d;
+return d.sound();`,
+        '"Woof"'
+      ],
+      [
+        `Cat c;
+Animal& r = c;
+return r.sound();`,
+        '"Meow"'
+      ],
+    ],
+    ["Without the `virtual` keyword the base version would always be called. Add a virtual destructor too (good practice)."]
+  );
+
+  add("oop","hard","Fraction with Operators",
+    "class Fraction { ... }",
+    "Define `Fraction(int num, int den)` that always keeps itself in lowest terms (the denominator is positive). Support `operator+`, `operator==` and `string toString()` that returns text like `\"5/6\"` (a whole number is `\"2/1\"`).\n\nExample: `Fraction(1,2) + Fraction(1,3)` → `\"5/6\"`",
+    [
+      [
+        `return (Fraction(1,2) + Fraction(1,3)).toString();`,
+        '"5/6"'
+      ],
+      [
+        `return Fraction(2,4) == Fraction(1,2);`,
+        "true"
+      ],
+      [
+        `return Fraction(6,3).toString();`,
+        '"2/1"'
+      ],
+      [
+        `return (Fraction(1,4) + Fraction(1,4)).toString();`,
+        '"1/2"'
+      ],
+    ],
+    ["Divide numerator and denominator by `std::gcd(num, den)` in the constructor. For `+`: `a/b + c/d = (a*d + c*b) / (b*d)`."]
+  );
+
+  /* ───────── STL Algorithms ───────── */
+  add("stl","easy","Sort Descending",
+    "vector<int> sortDesc(vector<int> v)",
+    "Return the vector sorted from the largest to the smallest value.\n\nExample: `sortDesc({3,1,2})` → `{3,2,1}`",
+    [
+      ["sortDesc({3,1,2})","vector<int>{3,2,1}"],
+      ["sortDesc({})","vector<int>{}"],
+      ["sortDesc({5,5,1})","vector<int>{5,5,1}"],
+    ],
+    ["`sort(v.begin(), v.end(), greater<int>())`."]
+  );
+
+  add("stl","medium","K-th Largest",
+    "int kthLargest(vector<int> v, int k)",
+    "Return the k-th largest element (1-based, duplicates count). `1 <= k <= v.size()`.\n\nExample: `kthLargest({3,2,1,5,6,4}, 2)` → `5`",
+    [
+      ["kthLargest({3,2,1,5,6,4},2)","5"],
+      ["kthLargest({3,2,3,1,2,4,5,5,6},4)","4"],
+      ["kthLargest({1},1)","1"],
+      ["kthLargest({7,7,7},3)","7"],
+    ],
+    ["`nth_element` with `greater<int>()`, or sort descending and take index `k-1`."]
+  );
+
+  add("stl","hard","Top K Frequent",
+    "vector<int> topKFrequent(vector<int> v, int k)",
+    "Return the `k` most frequent values. Order the result by frequency (highest first); values with the same frequency are ordered by the smaller value first.\n\nExample: `topKFrequent({1,1,1,2,2,3}, 2)` → `{1,2}`",
+    [
+      ["topKFrequent({1,1,1,2,2,3},2)","vector<int>{1,2}"],
+      ["topKFrequent({1},1)","vector<int>{1}"],
+      ["topKFrequent({4,4,5,5,6},2)","vector<int>{4,5}"],
+      ["topKFrequent({3,3,2,2,1},3)","vector<int>{2,3,1}"],
+    ],
+    ["Count with a map, copy the pairs into a vector and `sort` with a custom comparison (a lambda)."]
+  );
+
+  /* ───────── Modern C++ ───────── */
+  add("modern","easy","Apply Twice",
+    "int applyTwice(function<int(int)> f, int x)",
+    "Call the function `f` on `x`, then call `f` again on the result, and return it.\n\nExample: with `f = x + 3`, `applyTwice(f, 1)` → `7`",
+    [
+      [
+        `return applyTwice([](int x) { return x + 3; }, 1);`,
+        "7"
+      ],
+      [
+        `return applyTwice([](int x) { return x * x; }, 3);`,
+        "81"
+      ],
+      [
+        `int k = 10;
+return applyTwice([k](int x) { return x - k; }, 0);`,
+        "-20"
+      ],
+    ],
+    ["`std::function<int(int)>` can hold any lambda: just write `f(f(x))`."]
+  );
+
+  add("modern","medium","Unique Pointer Box",
+    "unique_ptr<int> makeBox(int v) / int unbox(unique_ptr<int> p)",
+    "Write `makeBox(v)` that returns a `unique_ptr<int>` owning the value `v`, and `unbox(p)` that takes ownership of a `unique_ptr<int>` and returns the value inside. Use `make_unique`.\n\nExample: `unbox(makeBox(7))` → `7`",
+    [
+      [
+        `auto b = makeBox(7);
+return unbox(move(b));`,
+        "7"
+      ],
+      [
+        `auto b = makeBox(-2);
+*b *= 3;
+return unbox(move(b));`,
+        "-6"
+      ],
+      [
+        `auto b = makeBox(5);
+return *b + 1;`,
+        "6"
+      ],
+    ],
+    ["A `unique_ptr` cannot be copied, only moved: the parameter of `unbox` is taken by value, and the caller uses `std::move`."]
+  );
+
+  add("modern","hard","Function Composition",
+    "function<int(int)> compose(function<int(int)> f, function<int(int)> g)",
+    "Return a new function `h` such that `h(x) = f(g(x))`. The returned function must keep working after `compose` has returned (capture `f` and `g` by value).\n\nExample: `compose(x+1, x*2)(5)` → `11`",
+    [
+      [
+        `auto h = compose([](int x) { return x + 1; }, [](int x) { return x * 2; });
+return h(5);`,
+        "11"
+      ],
+      [
+        `auto h = compose([](int x) { return x * x; }, [](int x) { return x - 1; });
+return h(4);`,
+        "9"
+      ],
+      [
+        `auto inc = [](int x) { return x + 1; };
+auto h = compose(inc, compose(inc, inc));
+return h(0);`,
+        "3"
+      ],
+    ],
+    ["Return a lambda `[f, g](int x) { return f(g(x)); }`. Capturing by value avoids dangling references."]
+  );
+
   /* ══════════════════════════════════════════════════════════════════════ */
-  (window.QUARTRA_DATA = window.QUARTRA_DATA || {}).cpp = {
+  (window.QUADRA_DATA = window.QUADRA_DATA || {}).cpp = {
     categories: CATEGORIES,
     questions: QUESTIONS
   };
