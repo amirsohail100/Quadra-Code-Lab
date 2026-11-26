@@ -1,23 +1,23 @@
 /* =====================================================================
-   js/app.js - Quartra track engine (used by python/cpp/dsa/sql pages).
+   js/app.js - Quadra Code Lab track engine (used by python/cpp/dsa/sql pages).
    The page sets <body data-track="python|cpp|dsa|sql">.
    ===================================================================== */
 (function () {
   "use strict";
 
-  const TRACKS = window.QUARTRA_TRACKS;
+  const TRACKS = window.QUADRA_TRACKS;
   const trackId = document.body.dataset.track;
   const T = TRACKS.find(t => t.id === trackId);
-  const DATA = (window.QUARTRA_DATA || {})[trackId];
-  const SOL = (window.QUARTRA_SOLUTIONS || {})[trackId] || {};
-  const H = window.QuartraHarness;
+  const DATA = (window.QUADRA_DATA || {})[trackId];
+  const SOL = (window.QUADRA_SOLUTIONS || {})[trackId] || {};
+  const H = window.QuadraHarness;
   const $ = s => document.querySelector(s);
   const LEVELS = ["easy", "medium", "hard"];
   const LVL = { easy: "Easy", medium: "Medium", hard: "Hard" };
 
   /* ---------- storage (safe) ---------- */
-  const KEY = "quartra:" + trackId + ":done";
-  const PREF = "quartra:prefs";
+  const KEY = "quadracodelab:" + trackId + ":done";
+  const PREF = "quadracodelab:prefs";
   function load(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch (e) { return fallback; } }
   function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) { /* ignore */ } }
   let done = load(KEY, {});
@@ -271,7 +271,7 @@
   });
 
   /* ---------- boot ---------- */
-  document.title = "Quartra · " + T.name + " practice";
+  document.title = "Quadra Code Lab · " + T.name + " practice";
   $("#trackTitle").textContent = T.icon + " " + T.name;
   $("#rate").value = prefs.rate;
   setTheme(prefs.theme || "dark");
