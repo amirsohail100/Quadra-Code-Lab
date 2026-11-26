@@ -2,8 +2,8 @@
 (function () {
   "use strict";
   const $ = s => document.querySelector(s);
-  const TRACKS = window.QUARTRA_TRACKS, DATA = window.QUARTRA_DATA;
-  const PREF = "quartra:prefs";
+  const TRACKS = window.QUADRA_TRACKS, DATA = window.QUADRA_DATA;
+  const PREF = "quadracodelab:prefs";
   const load = (k, f) => { try { return JSON.parse(localStorage.getItem(k)) || f; } catch (e) { return f; } };
   const toast = m => { const t = $("#toast"); t.textContent = m; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 1800); };
 
@@ -11,7 +11,7 @@
     let total = 0, solved = 0, cats = 0;
     $("#homeNav").innerHTML = '<a class="active" href="index.html">Home</a>' + TRACKS.map(t => '<a href="' + t.page + '">' + t.name + "</a>").join("");
     $("#tracks").innerHTML = TRACKS.map(t => {
-      const qs = DATA[t.id].questions, done = load("quartra:" + t.id + ":done", {});
+      const qs = DATA[t.id].questions, done = load("quadracodelab:" + t.id + ":done", {});
       const d = qs.filter(q => done[q.id]).length;
       total += qs.length; solved += d; cats += DATA[t.id].categories.length;
       return '<a class="track" href="' + t.page + '"><span class="t-icon">' + t.icon + "</span><h2>" + t.name + "</h2><p>" + t.blurb + "</p>" +
@@ -27,10 +27,10 @@
   $("#themeBtn").onclick = () => { prefs.theme = prefs.theme === "dark" ? "light" : "dark"; try { localStorage.setItem(PREF, JSON.stringify(prefs)); } catch (e) {} setTheme(prefs.theme); };
 
   $("#exportBtn").onclick = () => {
-    const out = {}; TRACKS.forEach(t => out[t.id] = load("quartra:" + t.id + ":done", {}));
+    const out = {}; TRACKS.forEach(t => out[t.id] = load("quadracodelab:" + t.id + ":done", {}));
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: "application/json" }));
-    a.download = "quartra-progress.json"; document.body.appendChild(a); a.click(); a.remove();
+    a.download = "quadra-code-lab-progress.json"; document.body.appendChild(a); a.click(); a.remove();
   };
   $("#importFile").onchange = e => {
     const f = e.target.files[0]; if (!f) return;
@@ -38,7 +38,7 @@
     r.onload = () => {
       try {
         const obj = JSON.parse(r.result);
-        TRACKS.forEach(t => { if (obj[t.id]) localStorage.setItem("quartra:" + t.id + ":done", JSON.stringify(obj[t.id])); });
+        TRACKS.forEach(t => { if (obj[t.id]) localStorage.setItem("quadracodelab:" + t.id + ":done", JSON.stringify(obj[t.id])); });
         render(); toast("Progress imported");
       } catch (err) { toast("Invalid file"); }
     };
@@ -46,7 +46,7 @@
   };
   $("#resetAll").onclick = () => {
     if (!confirm("Reset progress in ALL tracks?")) return;
-    TRACKS.forEach(t => { try { localStorage.removeItem("quartra:" + t.id + ":done"); } catch (e) {} });
+    TRACKS.forEach(t => { try { localStorage.removeItem("quadracodelab:" + t.id + ":done"); } catch (e) {} });
     render();
   };
   render();
