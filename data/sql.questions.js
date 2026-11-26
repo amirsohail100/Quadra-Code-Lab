@@ -1,5 +1,5 @@
-/* data/sql.questions.js  –  Quartra SQL track
-   40 questions · 8 categories · 5 per category (2 easy / 2 medium / 1 hard)
+/* data/sql.questions.js  –  Quadra Code Lab SQL track
+   56 questions · 8 categories · 7 per category
    Each question: id, cat, level, title, desc, tables[], expected{cols,rows,ordered?}, hints[], solution (hidden)
    tables[]: { name, cols:[[colName, sqlType], ...], rows:[[...], ...] }
 */
@@ -837,8 +837,249 @@
     "WITH RECURSIVE dates(d) AS (SELECT '2024-01-01' UNION ALL SELECT date(d,'+1 day') FROM dates WHERE d < '2024-05-31'), missing AS (SELECT d, julianday(d) - ROW_NUMBER() OVER (ORDER BY d) AS grp FROM dates WHERE d NOT IN (SELECT order_date FROM orders)) SELECT MIN(d) AS gap_start, MAX(d) AS gap_end FROM missing GROUP BY grp ORDER BY gap_start;"
   );
 
+  /* ═══════════ MORE QUESTIONS (added in Quadra Code Lab) ═══════════ */
+
+  add("select","easy","Top 3 Highest Paid",
+    "Return the `name` and `salary` of the 3 highest paid employees, highest salary first.",
+    [empTable],
+    { cols: ["name", "salary"], rows: [
+        ["Eve",102000],
+        ["Alice",95000],
+        ["Ivan",91000]
+      ], ordered: true },
+    ["ORDER BY ... DESC and LIMIT 3."],
+    "SELECT name, salary FROM employees ORDER BY salary DESC LIMIT 3"
+  );
+
+  add("select","medium","Recent Hires in Two Departments",
+    "Return `name` and `dept` of employees who work in `Engineering` or `HR` AND were hired after 2019-12-31. Sort by name.",
+    [empTable],
+    { cols: ["name", "dept"], rows: [
+        ["Bob","Engineering"],
+        ["Frank","HR"],
+        ["Grace","HR"],
+        ["Judy","HR"]
+      ], ordered: true },
+    ["IN ('Engineering','HR') combined with AND on the date. Dates are ISO text, so string comparison works."],
+    "SELECT name, dept FROM employees WHERE dept IN ('Engineering','HR') AND hire_date > '2019-12-31' ORDER BY name"
+  );
+
+  add("join","easy","Orders with Customer Name",
+    "Return the customer `name` and the `product` of every order. Sort by `order_id`.",
+    [orderTable, customerTable],
+    { cols: ["name", "product"], rows: [
+        ["Alice Smith","Laptop"],
+        ["Bob Jones","Phone"],
+        ["Alice Smith","Tablet"],
+        ["Carol White","Laptop"],
+        ["Dave Brown","Phone"],
+        ["Bob Jones","Headphones"],
+        ["Alice Smith","Keyboard"],
+        ["Eve Davis","Monitor"],
+        ["Carol White","Tablet"],
+        ["Dave Brown","Laptop"]
+      ], ordered: true },
+    ["INNER JOIN orders and customers on customer_id."],
+    "SELECT c.name, o.product FROM orders o JOIN customers c ON c.customer_id = o.customer_id ORDER BY o.order_id"
+  );
+
+  add("join","medium","Customers Without Orders",
+    "Return the `name` of every customer who has never placed an order.",
+    [customerTable, orderTable],
+    { cols: ["name"], rows: [
+        ["Frank Miller"]
+      ], ordered: false },
+    ["LEFT JOIN customers to orders, then keep rows where the order side is NULL."],
+    "SELECT c.name FROM customers c LEFT JOIN orders o ON o.customer_id = c.customer_id WHERE o.order_id IS NULL"
+  );
+
+  add("agg","medium","Revenue per Product",
+    "Return each `product` and the sum of its order `amount` as `total`. Highest total first; break ties by product name.",
+    [orderTable],
+    { cols: ["product", "total"], rows: [
+        ["Laptop",3600],
+        ["Phone",1600],
+        ["Tablet",900],
+        ["Monitor",350],
+        ["Headphones",150],
+        ["Keyboard",95]
+      ], ordered: true },
+    ["GROUP BY product, then ORDER BY total DESC, product."],
+    "SELECT product, SUM(amount) AS total FROM orders GROUP BY product ORDER BY total DESC, product"
+  );
+
+  add("agg","hard","Regions Above Average",
+    "First total the sales `amount` per `region`. Return the regions (`region`, `total`) whose total is higher than the AVERAGE of all region totals. Sort by region.",
+    [salesTable],
+    { cols: ["region", "total"], rows: [
+        ["North",12200],
+        ["South",12000]
+      ], ordered: true },
+    ["Put the per-region totals in a CTE, then compare each total with (SELECT AVG(total) FROM cte)."],
+    "WITH t AS (SELECT region, SUM(amount) AS total FROM sales GROUP BY region) SELECT region, total FROM t WHERE total > (SELECT AVG(total) FROM t) ORDER BY region"
+  );
+
+  add("sub","easy","Above Average Salary",
+    "Return `name` and `salary` of employees who earn more than the average salary of all employees. Highest salary first.",
+    [empTable],
+    { cols: ["name", "salary"], rows: [
+        ["Eve",102000],
+        ["Alice",95000],
+        ["Ivan",91000],
+        ["Bob",88000]
+      ], ordered: true },
+    ["Use (SELECT AVG(salary) FROM employees) inside the WHERE."],
+    "SELECT name, salary FROM employees WHERE salary > (SELECT AVG(salary) FROM employees) ORDER BY salary DESC"
+  );
+
+  add("sub","hard","Top Earner per Department",
+    "Return `dept`, `name` and `salary` of the highest paid employee in EACH department (use a correlated subquery). Sort by dept.",
+    [empTable],
+    { cols: ["dept", "name", "salary"], rows: [
+        ["Engineering","Eve",102000],
+        ["HR","Judy",63000],
+        ["Marketing","Heidi",75000]
+      ], ordered: true },
+    ["For every row compare salary with (SELECT MAX(salary) FROM employees WHERE dept = outer.dept)."],
+    "SELECT dept, name, salary FROM employees e WHERE salary = (SELECT MAX(salary) FROM employees WHERE dept = e.dept) ORDER BY dept"
+  );
+
+  add("window","medium","Running Total",
+    "Return `sale_id`, `amount` and a running total of `amount` called `running_total`, ordered by `sale_date` then `sale_id`. The output is sorted by `sale_id`.",
+    [salesTable],
+    { cols: ["sale_id", "amount", "running_total"], rows: [
+        [1,5000,5000],
+        [2,3200,8200],
+        [3,4500,12700],
+        [4,2100,14800],
+        [5,6000,20800],
+        [6,1800,22600],
+        [7,3500,26100],
+        [8,4200,30300],
+        [9,2800,33100],
+        [10,5500,38600],
+        [11,900,39500],
+        [12,3800,43300]
+      ], ordered: true },
+    ["SUM(amount) OVER (ORDER BY sale_date, sale_id)."],
+    "SELECT sale_id, amount, SUM(amount) OVER (ORDER BY sale_date, sale_id) AS running_total FROM sales ORDER BY sale_id"
+  );
+
+  add("window","hard","Month over Month Change",
+    "Total the sales `amount` per month (`YYYY-MM`, column `month`, column `total`). Add a column `change` = this month's total minus the previous month's total (NULL for the first month). Sort by month.",
+    [salesTable],
+    { cols: ["month", "total", "change"], rows: [
+        ["2024-01",12700,null],
+        ["2024-02",9900,-2800],
+        ["2024-03",7700,-2200],
+        ["2024-04",8300,600],
+        ["2024-05",4700,-3600]
+      ], ordered: true },
+    ["Make the monthly totals in a CTE with substr(sale_date, 1, 7), then use LAG(total) OVER (ORDER BY month)."],
+    "WITH m AS (SELECT substr(sale_date, 1, 7) AS month, SUM(amount) AS total FROM sales GROUP BY substr(sale_date, 1, 7)) SELECT month, total, total - LAG(total) OVER (ORDER BY month) AS change FROM m ORDER BY month"
+  );
+
+  add("string","easy","Email Domain",
+    "Return the customer `name` and the part of the `email` after the `@` as `domain`. Sort by `customer_id`.",
+    [customerTable],
+    { cols: ["name", "domain"], rows: [
+        ["Alice Smith","example.com"],
+        ["Bob Jones","example.com"],
+        ["Carol White","example.com"],
+        ["Dave Brown","example.com"],
+        ["Eve Davis","example.com"],
+        ["Frank Miller","example.com"]
+      ], ordered: true },
+    ["instr(email, '@') finds the position; substr(email, position + 1) gives the rest."],
+    "SELECT name, substr(email, instr(email, '@') + 1) AS domain FROM customers ORDER BY customer_id"
+  );
+
+  add("string","medium","Customer Initials",
+    "Return `name` and the upper-case initials `initials` (first letter of the first name + first letter of the last name, e.g. `AS`). All names have exactly two words. Sort by `customer_id`.",
+    [customerTable],
+    { cols: ["name", "initials"], rows: [
+        ["Alice Smith","AS"],
+        ["Bob Jones","BJ"],
+        ["Carol White","CW"],
+        ["Dave Brown","DB"],
+        ["Eve Davis","ED"],
+        ["Frank Miller","FM"]
+      ], ordered: true },
+    ["substr(name, 1, 1) is the first initial; the second one starts right after instr(name, ' '). Join with ||."],
+    "SELECT name, upper(substr(name, 1, 1)) || upper(substr(name, instr(name, ' ') + 1, 1)) AS initials FROM customers ORDER BY customer_id"
+  );
+
+  add("date","easy","Orders in March 2024",
+    "Return `order_id` and `order_date` of every order placed in March 2024. Sort by `order_id`.",
+    [orderTable],
+    { cols: ["order_id", "order_date"], rows: [
+        [5,"2024-03-01"],
+        [6,"2024-03-10"],
+        [7,"2024-03-20"]
+      ], ordered: true },
+    ["BETWEEN '2024-03-01' AND '2024-03-31' works on ISO date text."],
+    "SELECT order_id, order_date FROM orders WHERE order_date BETWEEN '2024-03-01' AND '2024-03-31' ORDER BY order_id"
+  );
+
+  add("date","medium","Years of Service",
+    "Return each employee `name` and the whole number of years `years` between `hire_date` and 2024-12-31 (use days / 365.25 and drop the decimals). Sort by name.",
+    [empTable],
+    { cols: ["name", "years"], rows: [
+        ["Alice",5],
+        ["Bob",4],
+        ["Carol",6],
+        ["Dave",3],
+        ["Eve",7],
+        ["Frank",2],
+        ["Grace",2],
+        ["Heidi",4],
+        ["Ivan",5],
+        ["Judy",3]
+      ], ordered: true },
+    ["julianday(a) - julianday(b) gives days; divide by 365.25 and CAST(... AS INTEGER)."],
+    "SELECT name, CAST((julianday('2024-12-31') - julianday(hire_date)) / 365.25 AS INTEGER) AS years FROM employees ORDER BY name"
+  );
+
+  add("adv","medium","Salary Bands",
+    "Return `name` and a column `band`: `High` for salary 90000 or more, `Mid` for 70000 or more, otherwise `Low`. Sort by `emp_id`.",
+    [empTable],
+    { cols: ["name", "band"], rows: [
+        ["Alice","High"],
+        ["Bob","Mid"],
+        ["Carol","Mid"],
+        ["Dave","Low"],
+        ["Eve","High"],
+        ["Frank","Low"],
+        ["Grace","Low"],
+        ["Heidi","Mid"],
+        ["Ivan","High"],
+        ["Judy","Low"]
+      ], ordered: true },
+    ["A CASE WHEN ... THEN ... ELSE ... END expression; check the highest limit first."],
+    "SELECT name, CASE WHEN salary >= 90000 THEN 'High' WHEN salary >= 70000 THEN 'Mid' ELSE 'Low' END AS band FROM employees ORDER BY emp_id"
+  );
+
+  add("adv","hard","Management Depth",
+    "`manager_id` links an employee to their manager. People without a manager have depth 0, their direct reports depth 1, and so on. Return `name` and `depth` using a recursive CTE. Sort by depth, then name.",
+    [empTable],
+    { cols: ["name", "depth"], rows: [
+        ["Alice",0],
+        ["Carol",0],
+        ["Frank",0],
+        ["Bob",1],
+        ["Dave",1],
+        ["Eve",1],
+        ["Grace",1],
+        ["Heidi",1],
+        ["Ivan",1],
+        ["Judy",1]
+      ], ordered: true },
+    ["Start with the rows where manager_id IS NULL, then UNION ALL a join of employees with the CTE (manager_id = cte.emp_id) and depth + 1."],
+    "WITH RECURSIVE chain(emp_id, name, depth) AS (SELECT emp_id, name, 0 FROM employees WHERE manager_id IS NULL UNION ALL SELECT e.emp_id, e.name, c.depth + 1 FROM employees e JOIN chain c ON e.manager_id = c.emp_id) SELECT name, depth FROM chain ORDER BY depth, name"
+  );
+
   /* ══════════════════════════════════════════════════════════════════════ */
-  (window.QUARTRA_DATA = window.QUARTRA_DATA || {}).sql = {
+  (window.QUADRA_DATA = window.QUADRA_DATA || {}).sql = {
     categories: CATEGORIES,
     questions: QUESTIONS
   };
