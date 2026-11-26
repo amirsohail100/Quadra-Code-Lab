@@ -1,5 +1,5 @@
-/* js/tracks.js - one place that describes the four Quartra tracks. */
-window.QUARTRA_TRACKS = [
+/* js/tracks.js - one place that describes the four Quadra Code Lab tracks. */
+window.QUADRA_TRACKS = [
   { id: "python", page: "python.html", icon: "🐍", name: "Python",
     kind: "code", lang: "Python", file: "solution.py", testExt: "py",
     blurb: "Master Python itself: lists, dicts, JSON, files, OS, classes, async. Solve in VS Code, check with a test script." },
@@ -13,3 +13,15 @@ window.QUARTRA_TRACKS = [
     kind: "sql", lang: "SQL (SQLite)",
     blurb: "Write queries against the given tables and match the expected output. Setup file and check script included." }
 ];
+
+/* One-time migration: progress saved under the old project name is copied to the new keys. */
+(function () {
+  try {
+    Object.keys(localStorage).forEach(function (k) {
+      if (k.indexOf("quartra:") === 0) {
+        var nk = "quadracodelab:" + k.slice(8);
+        if (localStorage.getItem(nk) === null) localStorage.setItem(nk, localStorage.getItem(k));
+      }
+    });
+  } catch (e) {}
+})();
